@@ -525,12 +525,26 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 	//TODO
 	@Override
 	public MJType visitExpression(MJNegate e) throws VisitorException {
+		MJType negateType = e.getType();
+		
+		if(!negateType.isBoolean()){
+			throw new TypeCheckerException("Arguments to ! must be of type boolean");
+		}
+		
+		e.setType(negateType);
+		
 		return e.getType();
 	}
 	
 	//TODO
 	@Override
 	public MJType visitExpression(MJNew e) throws VisitorException {
+		MJType newType = visitExpression(e);
+		if(!newType.isClass()){
+			
+		}
+		
+		
 		return e.getType();
 	}
 	
