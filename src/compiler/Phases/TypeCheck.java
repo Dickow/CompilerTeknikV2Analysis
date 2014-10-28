@@ -304,16 +304,37 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		return MJType.getVoidType();
 	}
 
+	//TODO
 	@Override
 	public MJType visitStatement(MJIf e) throws VisitorException {
+		MJType ifCondition = visitExpression(e.getCondition());
+		MJBlock ifBlock = e.getIfBlock();
+		
+		if(!ifCondition.isBoolean()){
+			throw new VisitorException("Condition of if statement must be of type boolean");
+		}
+		visitStatement(ifBlock);
 		return MJType.getVoidType();
 	}
-
+	
+	//TODO
 	@Override
 	public MJType visitStatement(MJIfElse e) throws VisitorException {
+		MJType ifCondition = visitExpression(e.getCondition());
+		MJBlock ifBlock = e.getIfBlock();
+		MJBlock elseBlock = e.getElseBlock();
+		
+		if(!ifCondition.isBoolean()){
+			throw new VisitorException("Condition of if statement must be of type boolean");
+		}
+		
+		visitStatement(ifBlock);
+		visitStatement(elseBlock);
+		
 		return MJType.getVoidType();
 	}
-
+	
+	//TODO
 	@Override
 	public MJType visitStatement(MJWhile e) throws VisitorException {
 		return MJType.getVoidType();
@@ -332,13 +353,15 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		
 		return MJType.getVoidType();
 	}
-
+	
+	//TODO
 	@Override
 	public MJType visitStatement(MJPrint e) throws VisitorException {
 		
 		return MJType.getVoidType();
 	}
-
+	
+	//TODO
 	@Override
 	public MJType visitStatement(MJPrintln e) throws VisitorException {
 		
@@ -347,7 +370,8 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		
 		return MJType.getVoidType();
 	}
-
+	
+	//TODO
 	@Override
 	public MJType visitStatement(MJMethodCallStmt e) throws VisitorException {
 		visitExpression(e.getMethodCallExpr());
@@ -398,13 +422,15 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		e.setType(MJType.getBooleanType());
 		return e.getType();
 	}
-
+	
+	//TODO
 	@Override
 	public MJType visitExpression(MJLess e) throws VisitorException {
 		
 		return e.getType();
 	}
-
+	
+	//TODO
 	@Override
 	public MJType visitExpression(MJPlus e) throws VisitorException {
 		
@@ -434,7 +460,8 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		e.setType(leftType);
 		return e.getType();
 	}
-
+	
+	//TODO
 	@Override
 	public MJType visitExpression(MJMult e) throws VisitorException {
 		
@@ -453,46 +480,54 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		e.setType(type);
 		return e.getType();
 	}
-
+	
+	//TODO
 	@Override
 	public MJType visitExpression(MJNegate e) throws VisitorException {
 		return e.getType();
 	}
-
+	
+	//TODO
 	@Override
 	public MJType visitExpression(MJNew e) throws VisitorException {
 		return e.getType();
 	}
-
+	
+	//TODO
 	@Override
 	public MJType visitExpression(MJNewArray e) throws VisitorException {
 		return e.getType();
 	}
-
+	
+	//TODO
 	@Override
 	public MJType visitExpression(MJMethodCallExpr e) throws VisitorException {
 
 		return e.getType();
 	}
-
+	
+	//TODO
 	@Override
 	public MJType visitExpression(MJParentheses e) throws VisitorException {
 		e.setType(visitExpression(e.getArgument()));
 		return e.getType();
 	}
 
+	//TODO
 	@Override
 	public MJType visitExpression(MJBoolean e) throws VisitorException {
 		e.setType(MJType.getBooleanType());
 		return e.getType();
 	}
 
+	//TODO
 	@Override
 	public MJType visitExpression(MJInteger e) throws VisitorException {
 		e.setType(MJType.getIntType());
 		return e.getType();
 	}
 
+	//TODO
 	@Override
 	public MJType visitExpression(MJString e) throws VisitorException {
 		e.setType(MJType.getClassType("String"));
@@ -589,6 +624,7 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		return e.getType();
 	}
 
+	//TODO
 	@Override
 	public MJType visitExpression(MJNoExpression e) throws VisitorException {
 		e.setType(MJType.getVoidType());
