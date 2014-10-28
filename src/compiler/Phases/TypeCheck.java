@@ -337,6 +337,15 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 	//TODO
 	@Override
 	public MJType visitStatement(MJWhile e) throws VisitorException {
+		MJType whileCondition = visitExpression(e.getCondition());
+		MJBlock whileBlock = e.getBlock();
+		
+		if(!whileCondition.isBoolean()){
+			throw new VisitorException("Condition of while statement must be of type boolean");
+		}
+		
+		visitStatement(whileBlock);
+		
 		return MJType.getVoidType();
 	}
 
@@ -357,6 +366,8 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 	//TODO
 	@Override
 	public MJType visitStatement(MJPrint e) throws VisitorException {
+		
+		visitExpression(e.getParameter());
 		
 		return MJType.getVoidType();
 	}
@@ -426,6 +437,13 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 	//TODO
 	@Override
 	public MJType visitExpression(MJLess e) throws VisitorException {
+		MJType lhs = visitExpression (e.getLhs());
+		MJType rhs = visitExpression (e.getRhs());
+		
+		if(!lhs.isSame(rhs) || !lhs.isInt()){
+			throw new TypeCheckerException("Arguments to < must be of type int");
+		}
+		e.setType(MJType.getBooleanType());
 		
 		return e.getType();
 	}
@@ -433,6 +451,20 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 	//TODO
 	@Override
 	public MJType visitExpression(MJPlus e) throws VisitorException {
+		
+		MJType leftType = visitExpression(e.getLhs());
+		MJType rightType = visitExpression(e.getRhs());
+		
+		
+		if(leftType.isInt() & rightType.isInt()){
+			e.setType(leftType);
+		}
+		
+		// Hjælp til hvordan man spørger ang. strings !!!
+		if(!leftType.isSame(rightType) & !leftType.isInt()  ){
+			
+			throw new VisitorException("awdaw");
+		}
 		
 		return e.getType();
 	}
@@ -464,6 +496,15 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 	//TODO
 	@Override
 	public MJType visitExpression(MJMult e) throws VisitorException {
+		
+		MJType leftType = visitExpression(e.getLhs());
+		MJType rightType = visitExpression(e.getRhs());
+		
+		if(!leftType.isSame(rightType) || !leftType.isInt()){
+			throw new TypeCheckerException("Arguments of * must be of int");
+		}
+		
+		e.setType(leftType);
 		
 		return e.getType();
 	}
