@@ -551,12 +551,21 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 	//TODO
 	@Override
 	public MJType visitExpression(MJNewArray e) throws VisitorException {
+		MJType arrayExpression = visitExpression(e.getSize());
+		
+		if(!arrayExpression.isInt()){
+			throw new TypeCheckerException("Size for int [] must be of type int");
+		}
+		e.setType(arrayExpression);
 		return e.getType();
 	}
 	
 	//TODO
 	@Override
 	public MJType visitExpression(MJMethodCallExpr e) throws VisitorException {
+		MJType identType = visitExpression(e.getObject());
+		
+		
 
 		return e.getType();
 	}
