@@ -537,7 +537,7 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 
 	@Override
 	public MJType visitExpression(MJNegate e) throws VisitorException {
-		MJType negateType = e.getType();
+		MJType negateType = visitExpression(e.getArgument());
 
 		if (!negateType.isBoolean()) {
 			throw new TypeCheckerException(
@@ -578,12 +578,11 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 	// if all argument expressions type check,
 	// and if the variable’s class declares a method with the correct name and
 	// combination of argument types.
-	// TODO
+
 	@Override
 	public MJType visitExpression(MJMethodCallExpr e) throws VisitorException {
 		LinkedList<MJExpression> expressions = e.getArguments();
-		MJType identType = e.getObject().getType();
-		
+		MJType identType = visitExpression(e.getObject());
 
 		if (identType != null) {
 			try {
@@ -591,15 +590,28 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 			} catch (ClassNotFound e1) {
 				throw new VisitorException("The identifier is not valid");
 			}
+
+			for (int i = 0; i < expressions.size(); i++) {
+				visitExpression(expressions.get(i));
+			}
 		}
-		
-		for(int i = 0; i<= expressions.size();i++){
-			
+		try {
+			MJMethod m = IR.classes.lookupMethod(IR.classes.lookup(identType.getName()),
+					e.getMethodName(), expressions);
+			e.setTarget(m);
+		} catch (ClassErrorMethod e1) {
+			throw new VisitorException("The arguments of the method does not match");
+		} catch (MethodNotFound e1) {
+			throw new VisitorException("The method does not exist");
+		} catch (ClassNotFound e1) {
+			throw new VisitorException("The class does not exist");
+		} catch (NullPointerException e1){
+			throw new VisitorException("Det skete i denne metode");	
 		}
-		
+
 		return e.getType();
 	}
-	
+
 	@Override
 	public MJType visitExpression(MJParentheses e) throws VisitorException {
 		e.setType(visitExpression(e.getArgument()));
