@@ -562,7 +562,6 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		return e.getType();
 	}
 
-	// TODO
 	@Override
 	public MJType visitExpression(MJNewArray e) throws VisitorException {
 		MJType arrayExpression = visitExpression(e.getSize());
@@ -575,36 +574,50 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		return e.getType();
 	}
 
+	// A method call type checks if the variable is declared and has class type,
+	// if all argument expressions type check,
+	// and if the variable’s class declares a method with the correct name and
+	// combination of argument types.
 	// TODO
 	@Override
 	public MJType visitExpression(MJMethodCallExpr e) throws VisitorException {
-		MJType identType = visitExpression(e.getObject());
+		LinkedList<MJExpression> expressions = e.getArguments();
+		MJType identType = e.getObject().getType();
+		
 
+		if (identType != null) {
+			try {
+				IR.classes.lookup(identType.getName());
+			} catch (ClassNotFound e1) {
+				throw new VisitorException("The identifier is not valid");
+			}
+		}
+		
+		for(int i = 0; i<= expressions.size();i++){
+			
+		}
+		
 		return e.getType();
 	}
-
-	// TODO
+	
 	@Override
 	public MJType visitExpression(MJParentheses e) throws VisitorException {
 		e.setType(visitExpression(e.getArgument()));
 		return e.getType();
 	}
 
-	// TODO
 	@Override
 	public MJType visitExpression(MJBoolean e) throws VisitorException {
 		e.setType(MJType.getBooleanType());
 		return e.getType();
 	}
 
-	// TODO
 	@Override
 	public MJType visitExpression(MJInteger e) throws VisitorException {
 		e.setType(MJType.getIntType());
 		return e.getType();
 	}
 
-	// TODO
 	@Override
 	public MJType visitExpression(MJString e) throws VisitorException {
 		e.setType(MJType.getClassType("String"));
