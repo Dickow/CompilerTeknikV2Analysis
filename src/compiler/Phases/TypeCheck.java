@@ -382,7 +382,6 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		return MJType.getVoidType();
 	}
 	
-	//TODO
 	@Override
 	public MJType visitStatement(MJMethodCallStmt e) throws VisitorException {
 		visitExpression(e.getMethodCallExpr());
@@ -688,7 +687,6 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		return e.getType();
 	}
 
-	//TODO
 	@Override
 	public MJType visitExpression(MJNoExpression e) throws VisitorException {
 		e.setType(MJType.getVoidType());
