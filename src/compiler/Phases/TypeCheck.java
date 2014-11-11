@@ -591,10 +591,11 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 				throw new VisitorException("The identifier is not valid");
 			}
 
-			for (int i = 0; i < expressions.size(); i++) {
-				visitExpression(expressions.get(i));
+			for(MJExpression expr : expressions  ){
+				visitExpression(expr);
 			}
 		}
+		
 		try {
 			MJMethod m = IR.classes.lookupMethod(IR.classes.lookup(identType.getName()),
 					e.getMethodName(), expressions);
