@@ -168,6 +168,7 @@ public class MJMethodTable {
 				}
 
 			}
+			throw new ClassErrorMethod("");
 		}
 		throw new MethodNotFound(mname);
 	}

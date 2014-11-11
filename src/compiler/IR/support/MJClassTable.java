@@ -192,7 +192,7 @@ public class MJClassTable {
 		while (true) {
 
 			MJMethodTable methods = methodMap.get(decl);
-
+			
 			try {
 				meth = methods.lookup(name, arglist);
 			} catch (MethodNotFound e) {
