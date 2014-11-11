@@ -590,24 +590,24 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 			} catch (ClassNotFound e1) {
 				throw new VisitorException("The identifier is not valid");
 			}
-
-			for(MJExpression expr : expressions  ){
-				visitExpression(expr);
-			}
 		}
-		
+		for (MJExpression expr : expressions) {
+			visitExpression(expr);
+		}
 		try {
-			MJMethod m = IR.classes.lookupMethod(IR.classes.lookup(identType.getName()),
-					e.getMethodName(), expressions);
+			MJMethod m = IR.classes.lookupMethod(
+					IR.classes.lookup(identType.getName()), e.getMethodName(),
+					expressions);
 			e.setTarget(m);
 		} catch (ClassErrorMethod e1) {
-			throw new VisitorException("The arguments of the method does not match");
+			throw new VisitorException(
+					"The arguments of the method does not match");
 		} catch (MethodNotFound e1) {
 			throw new VisitorException("The method does not exist");
 		} catch (ClassNotFound e1) {
 			throw new VisitorException("The class does not exist");
-		} catch (NullPointerException e1){
-			throw new VisitorException("Det skete i denne metode");	
+		} catch (NullPointerException e1) {
+			throw new VisitorException("Det skete i denne metode");
 		}
 
 		return e.getType();
