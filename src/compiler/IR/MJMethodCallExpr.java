@@ -28,6 +28,7 @@ public class MJMethodCallExpr extends MJExpression {
 	}
 	
 	public MJIdentifier getObject() { return this.object; }
+	
 	public void setObject(MJIdentifier id) {
 		this.object = id;
 	}
@@ -50,5 +51,8 @@ public class MJMethodCallExpr extends MJExpression {
 		this.arguments = _arguments;
 		
 	}
+	
+	@Override
+	public MJType getType() { return this.target.getReturnType(); }
 	
 }
