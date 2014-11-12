@@ -13,6 +13,7 @@ class testmain {
 		a.test("Hello", 42);
 		
 		a.test(b.spas(true), b.spas());
+		b.sub.test(b.spas(true), b.spas());
 		
 		return;
 	}
@@ -37,7 +38,7 @@ class A {
 		
 		counter = 0;
 		
-		if (!number){
+		if (!(number < 0)){
 			a = 2;
 		}
 		
@@ -68,7 +69,9 @@ class A {
 
 class B {
 	
-	int y;
+	String y;
+	String n;
+	A sub;
 	
 	public void test2(int a, int b){
 		return;

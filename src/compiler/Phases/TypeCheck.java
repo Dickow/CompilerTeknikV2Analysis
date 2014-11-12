@@ -576,12 +576,12 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 
 	// A method call type checks if the variable is declared and has class type,
 	// if all argument expressions type check,
-	// and if the variable’s class declares a method with the correct name and
+	// and if the variableï¿½s class declares a method with the correct name and
 	// combination of argument types.
 
 	@Override
 	public MJType visitExpression(MJMethodCallExpr e) throws VisitorException {
-		LinkedList<MJExpression> expressions = e.getArguments();
+		LinkedList<MJExpression> arguments = e.getArguments();
 		MJType identType = visitExpression(e.getObject());
 
 		if (identType != null) {
@@ -591,13 +591,13 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 				throw new VisitorException("The identifier is not valid");
 			}
 		}
-		for (MJExpression expr : expressions) {
+		for (MJExpression expr : arguments) {
 			visitExpression(expr);
 		}
 		try {
 			MJMethod m = IR.classes.lookupMethod(
 					IR.classes.lookup(identType.getName()), e.getMethodName(),
-					expressions);
+					arguments);
 			e.setTarget(m);
 		} catch (ClassErrorMethod e1) {
 			throw new VisitorException(
@@ -607,6 +607,7 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		} catch (ClassNotFound e1) {
 			throw new VisitorException("The class does not exist");
 		} catch (NullPointerException e1) {
+			e1.printStackTrace();
 			throw new VisitorException("Det skete i denne metode");
 		}
 
@@ -640,6 +641,10 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 
 	@Override
 	public MJType visitExpression(MJIdentifier e) throws VisitorException {
+		
+		if(e instanceof MJSelector)
+			return visitExpression( (MJSelector) e);
+		
 		// find the declaration for the identifier on the stack
 		MJVariable var;
 		String name = e.getName();
